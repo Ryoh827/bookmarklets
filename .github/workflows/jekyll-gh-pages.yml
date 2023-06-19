@@ -34,8 +34,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: npm ci
-      - run: npm run build
+      - run: yarn install --immutable --immutable-cache --check-cache
+      - run: yarn run build
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
