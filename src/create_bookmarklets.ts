@@ -2,6 +2,9 @@ import { globSync } from 'glob';
 import { promises as fs } from 'fs';
 import { mkdirp } from 'mkdirp';
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 /**
  * src上のpath一覧を取得する
@@ -13,7 +16,8 @@ const getSrcPaths = (): string[] => {
 };
 
 const createBookmarklets = async () => {
-  const HOSTNAME = 'example.com';
+  const HOSTNAME = process.env.HOSTNAME || 'localhost:8080';
+  const PREFIX = process.env.PREFIX || '';
 
   const paths = getSrcPaths();
 
@@ -24,7 +28,7 @@ const createBookmarklets = async () => {
     const template = `javascript:(function () {
   document.body
     .appendChild(document.createElement('script'))
-    .src = "https://${HOSTNAME}/${filepathWithoutDist}";
+    .src = "https://${HOSTNAME}/${PREFIX}/${filepathWithoutDist}";
 })();`;
 
     mkdirp.sync(`./${path.dirname(savePath)}`);
